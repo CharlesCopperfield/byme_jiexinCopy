@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.itcast.jk.mapper.PackingListMapper">
+	<resultMap type="cn.itcast.jk.domain.PackingList" id="packingListRM">
+		<id property="id" column="PACKING_LIST_ID" />
+		<result property="seller" column="SELLER" />
+		<result property="buyer" column="BUYER" />
+		<result property="invoiceNo" column="INVOICE_NO" />
+		<result property="invoiceDate" column="INVOICE_DATE" />
+		<result property="marks" column="MARKS" />
+		<result property="descriptions" column="DESCRIPTIONS" />
+		<result property="exportIds" column="EXPORT_IDS" />
+		<result property="exportNos" column="EXPORT_NOS" />
+		<result property="state" column="STATE" />
+		<result property="createBy" column="CREATE_BY" />
+		<result property="createDept" column="CREATE_DEPT" />
+		<result property="createTime" column="CREATE_TIME" />
+	</resultMap>
+
+
+	<select id="findAll" resultMap="packingListRM">
+		select * from PACKING_LIST_C
+	</select>
+	
+	<select id="findById" resultMap="packingListRM">
+		select * from PACKING_LIST_C where PACKING_LIST_ID=#{id}
+	</select>
+
+	<delete id="deleteById">
+		delete from PACKING_LIST_C where PACKING_LIST_ID=#{id}
+	</delete>
+	
+	<delete id="deleteByIds">
+		delete from PACKING_LIST_C where PACKING_LIST_ID in
+		<foreach collection="array" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</delete>
+
+	<insert id="insertOne" parameterType="packingList">
+		insert into 
+		PACKING_LIST_C(PACKING_LIST_ID,SELLER,BUYER,INVOICE_NO,INVOICE_DATE,MARKS,DESCRIPTIONS,EXPORT_IDS,EXPORT_NOS,
+		STATE,CREATE_BY,CREATE_DEPT,CREATE_TIME)
+		values(#{id},#{seller},#{buyer},#{invoiceNo},#{invoiceDate},#{marks},#{descriptions},#{exportIds},
+		#{exportNos},#{state},#{createBy},#{createDept},#{createTime})
+	</insert>
+	
+	<update id="updateOne" parameterType="packingList">
+		update PACKING_LIST_C
+		set
+		SELLER=#{seller},BUYER=#{buyer},INVOICE_NO=#{invoiceNo},INVOICE_DATE=#{invoiceDate},MARKS=#{marks},
+		DESCRIPTIONS=#{descriptions},EXPORT_IDS=#{exportIds},EXPORT_NOS=#{exportNos},STATE=#{state},CREATE_BY=#{createBy},
+		CREATE_DEPT=#{createDept},CREATE_TIME=#{createTime}
+		where
+		PACKING_LIST_ID=#{id}
+	</update>
+
+
+
+
+
+
+</mapper>

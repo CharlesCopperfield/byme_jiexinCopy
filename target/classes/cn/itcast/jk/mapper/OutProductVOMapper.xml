@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.itcast.jk.mapper.OutProductVOMapper">
+	<resultMap type="outProductVO" id="outProductVORM">
+		<result property="customName" column="CUSTOM_NAME" />
+		<result property="contractNo" column="CONTRACT_NO" />
+		<result property="deliveryPeriod" column="DELIVERY_PERIOD" />
+		<result property="shipTime" column="SHIP_TIME" />
+		<result property="tradeTerms" column="TRADE_TERMS" />
+		<result property="productNo" column="PRODUCT_NO" />
+		<result property="cnumber" column="CNUMBER" />
+		<result property="factoryName" column="FACTORY_NAME" />
+	</resultMap>
+	
+	<select id="findAllBySigningDate" resultMap="outProductVORM">
+		SELECT
+		c.CUSTOM_NAME,c.CONTRACT_NO,c.DELIVERY_PERIOD,c.SHIP_TIME,c.TRADE_TERMS,c.SIGNING_DATE,
+		cp.PRODUCT_NO,cp.CNUMBER,cp.FACTORY_NAME
+		FROM CONTRACT_C c,CONTRACT_PRODUCT_C cp
+		WHERE c.CONTRACT_ID=cp.CONTRACT_ID
+		AND DATE_FORMAT(c.SIGNING_DATE, '%Y-%m')=#{inputDate}
+	</select>
+
+
+
+
+
+
+
+
+
+
+</mapper>

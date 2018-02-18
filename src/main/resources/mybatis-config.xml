@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	
+	<!-- <properties resource="jdbc.properties" /> -->
+	
+	<settings>
+		<setting name="logImpl" value="log4j" />
+	</settings>
+	
+	<typeAliases>
+		<package name="cn.itcast.jk.domain"/>
+		<package name="cn.itcast.jk.vo"/>
+		
+	</typeAliases>
+	
+	
+	<!-- <environments default="mysql">
+		<environment id="mysql">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+	
+	</environments> -->
+
+	<mappers>
+		<mapper resource="cn/itcast/jk/mapper/FactoryMapper.xml"/>
+		<mapper resource="cn/itcast/jk/mapper/ContractMapper.xml"/>
+		<mapper resource="cn/itcast/jk/mapper/ContractProductMapper.xml"/>
+		<mapper resource="cn/itcast/jk/mapper/ExportMapper.xml"/>
+		<mapper resource="cn/itcast/jk/mapper/ExportProductMapper.xml"/>
+		<mapper resource="cn/itcast/jk/mapper/ExtCproductMapper.xml"/>
+		<mapper resource="cn/itcast/jk/mapper/ExtEproductMapper.xml"/>
+		<mapper resource="cn/itcast/jk/mapper/PackingListMapper.xml"/>
+		<mapper resource="cn/itcast/jk/mapper/OutProductVOMapper.xml"/>
+	</mappers>
+
+
+</configuration>

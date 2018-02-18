@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.itcast.jk.mapper.ContractMapper">
+	<resultMap id="contractRM" type="cn.itcast.jk.domain.Contract">
+		<id property="id" column="CONTRACT_ID" />
+		<result property="offeror" column="OFFEROR" />
+		<result property="contractNo" column="CONTRACT_NO" />
+		<result property="signingDate" column="SIGNING_DATE" />
+		<result property="inputBy" column="INPUT_BY" />
+		<result property="checkBy" column="CHECK_BY" />
+		<result property="inspector" column="INSPECTOR" />
+		<result property="totalAmount" column="TOTAL_AMOUNT" />
+		<result property="importNum" column="IMPORT_NUM" />
+		<result property="crequest" column="CREQUEST" />
+		<result property="customName" column="CUSTOM_NAME" />
+		<result property="deliveryPeriod" column="DELIVERY_PERIOD" />
+		<result property="shipTime" column="SHIP_TIME" />
+		<result property="tradeTerms" column="TRADE_TERMS" />
+		<result property="remark" column="REMARK" />
+		<result property="printStyle" column="PRINT_STYLE" />
+		<result property="oldState" column="OLD_STATE" />
+		<result property="state" column="STATE" />
+		<result property="outState" column="OUT_STATE" />
+		<result property="createBy" column="CREATE_BY" />
+		<result property="createDept" column="CREATE_DEPT" />
+		<result property="createTime" column="CREATE_TIME" />
+	</resultMap>
+
+
+	<resultMap type="cn.itcast.jk.vo.ContractVO" id="contractVORM"
+		extends="contractRM">
+		<!-- 配置List<ContractProductVO> contractProducts属性,此属性为集合属性,标签为collection -->
+		<collection property="contractProducts" ofType="cn.itcast.jk.vo.ContractProductVO"
+			javaType="java.util.ArrayList">
+			<id property="id" column="cp_CONTRACT_PRODUCT_ID" />
+			<result property="productNo" column="cp_PRODUCT_NO" />
+			<result property="productImage" column="cp_PRODUCT_IMAGE" />
+			<result property="productDesc" column="cp_PRODUCT_DESC" />
+			<result property="cnumber" column="cp_CNUMBER" />
+			<result property="outNumber" column="cp_OUT_NUMBER" />
+			<result property="loadingRate" column="cp_LOADING_RATE" />
+			<result property="boxNum" column="cp_BOX_NUM" />
+			<result property="packingUnit" column="cp_PACKING_UNIT" />
+			<result property="price" column="cp_PRICE" />
+			<result property="amount" column="cp_AMOUNT" />
+			<result property="finished" column="cp_FINISHED" />
+			<result property="exts" column="cp_EXTS" />
+			<result property="orderNo" column="cp_ORDER_NO" />
+
+			<!-- 和生产厂家多对一 -->
+			<association property="factory" javaType="cn.itcast.jk.domain.Factory">
+				<id property="id" column="cpf_FACTORY_ID" />
+				<result property="fullName" column="cpf_FULL_NAME" />
+				<result property="factoryName" column="cpf_FACTORY_NAME" />
+				<result property="contacts" column="cpf_CONTACTS" />
+				<result property="phone" column="cpf_PHONE" />
+			</association>
+
+			<!-- 和附件一对多 -->
+			<collection property="extCproducts" ofType="cn.itcast.jk.vo.ExtCproductVO">
+				<id property="id" column="ext_EXT_CPRODUCT_ID" />
+				<result property="ctype" column="ext_CTYPE" />
+				<result property="productNo" column="ext_PRODUCT_NO" />
+				<result property="productImage" column="ext_PRODUCT_IMAGE" />
+				<result property="productDesc" column="ext_PRODUCT_DESC" />
+				<result property="cnumber" column="ext_CNUMBER" />
+				<result property="packingUnit" column="ext_PACKING_UNIT" />
+				<result property="price" column="ext_PRICE" />
+				<result property="amount" column="ext_AMOUNT" />
+				<result property="productRequest" column="ext_PRODUCT_REQUEST" />
+				<result property="orderNo" column="ext_ORDER_NO" />
+
+				<association property="factory" javaType="cn.itcast.jk.domain.Factory">
+					<id property="id" column="extf_FACTORY_ID" />
+					<result property="fullName" column="extf_FULL_NAME" />
+					<result property="factoryName" column="extf_FACTORY_NAME" />
+					<result property="contacts" column="extf_CONTACTS" />
+					<result property="phone" column="extf_PHONE" />
+				</association>
+			</collection>
+		</collection>
+	</resultMap>
+	
+
+	<select id="view" parameterType="string" resultMap="contractVORM">
+		SELECT 
+     		<!-- contract_c field -->
+			c.CONTRACT_ID,c.OFFEROR,c.CONTRACT_NO,c.SIGNING_DATE,c.INPUT_BY,c.CHECK_BY,c.INSPECTOR,
+			c.TOTAL_AMOUNT,c.IMPORT_NUM,c.CREQUEST,c.CUSTOM_NAME,c.DELIVERY_PERIOD,c.SHIP_TIME,c.TRADE_TERMS,
+			c.REMARK,c.PRINT_STYLE,c.OLD_STATE,c.STATE,c.OUT_STATE,c.CREATE_BY,c.CREATE_DEPT,c.CREATE_TIME,
+			
+		 	 <!-- c_contract_product_c field	 -->	
+			cp.CONTRACT_PRODUCT_ID AS cp_CONTRACT_PRODUCT_ID,cp.PRODUCT_NO AS cp_PRODUCT_NO,cp.PRODUCT_IMAGE AS cp_PRODUCT_IMAGE,
+	        cp.PRODUCT_DESC AS cp_PRODUCT_DESC,cp.CNUMBER AS cp_CNUMBER,cp.OUT_NUMBER AS cp_OUT_NUMBER,cp.LOADING_RATE AS cp_LOADING_RATE,
+	        cp.BOX_NUM AS cp_BOX_NUM,cp.PACKING_UNIT AS cp_PACKING_UNIT,cp.PRICE AS cp_PRICE,cp.AMOUNT AS cp_AMOUNT,cp.FINISHED AS cp_FINISHED,
+	        cp.EXTS AS cp_EXTS,cp.ORDER_NO AS cp_ORDER_NO,
+	      
+		    <!-- cp_factory-c field -->
+			cpf.FACTORY_ID AS cpf_FACTORY_ID,cpf.FULL_NAME AS cpf_FULL_NAME,cpf.FACTORY_NAME AS cpf_FACTORY_NAME,cpf.CONTACTS AS cpf_CONTACTS,cpf.PHONE AS cpf_PHONE,
+				
+		     <!-- cp_ext_cproduct_c field -->
+			ext.EXT_CPRODUCT_ID AS ext_EXT_CPRODUCT_ID,ext.CTYPE AS ext_CTYPE,ext.PRODUCT_NO AS ext_PRODUCT_NO,
+			ext.PRODUCT_IMAGE AS ext_PRODUCT_IMAGE,ext.PRODUCT_DESC AS ext_PRODUCT_DESC,
+			ext.CNUMBER AS ext_CNUMBER,ext.PACKING_UNIT AS ext_PACKING_UNIT,ext.PRICE AS ext_PRICE,ext.AMOUNT AS ext_AMOUNT,ext.PRODUCT_REQUEST AS ext_PRODUCT_REQUEST,
+			ext.ORDER_NO AS ext_ORDER_NO,
+		     <!-- ext_factory_c field -->
+			extf.FACTORY_ID AS extf_FACTORY_ID,extf.FULL_NAME AS extf_FULL_NAME,extf.FACTORY_NAME AS extf_FACTORY_NAME,extf.CONTACTS AS extf_CONTACTS,extf.PHONE AS extf_PHONE      
+	   FROM 
+	   		<!-- 先将所有表连成一个总表,其中每个表都会有一个别名,在上面的select中直接表别名.字段名 as 字段别名 就可以查出任何想要的数据.
+	   			 其实在数据库中查询东西都是这个思路.最终无非是从一张表中查数据.与其跟下面view2中一样分成很多个表查,不如这样子一次性弄一个
+	   			 总表出来,然后直接根据总表查.这样子整个查询语句的骨架就非常简单.就相当于select field_name from table_name where ?
+	   			 刚刚跑去oracle验证了,join on的用法也完全行得通.这倒是一个很不错的办法.采用这种join on连接表的方法可以解决查询中的不少问题吧!-->
+		 	(
+		 	    (contract_c c LEFT JOIN contract_product_c cp ON c.CONTRACT_ID=cp.CONTRACT_ID)
+	       		LEFT JOIN factory_c cpf ON cp.FACTORY_ID=cpf.FACTORY_ID
+	       	)
+	        LEFT JOIN 
+				(ext_cproduct_c ext LEFT JOIN factory_c extf ON ext.FACTORY_ID=extf.FACTORY_ID) 
+			ON cp.CONTRACT_PRODUCT_ID=ext.CONTRACT_PRODUCT_ID
+	   WHERE 
+	   		c.CONTRACT_ID=#{contractId}
+		
+		
+		
+
+	</select>
+
+	<select id="findAll" resultMap="contractRM">
+		select
+		(select count(*) from
+		CONTRACT_PRODUCT_C where CONTRACT_ID=c.CONTRACT_ID ) as
+		contractProductNum,
+		(select count(*) from EXT_CPRODUCT_C where
+		CONTRACT_PRODUCT_ID in
+		(select cp.CONTRACT_PRODUCT_ID from
+		CONTRACT_PRODUCT_C cp where
+		CONTRACT_ID=c.CONTRACT_ID)
+		) as
+		extCproductNum,
+		IFNULL((SELECT SUM(amount) amount FROM
+		CONTRACT_PRODUCT_C WHERE
+		CONTRACT_ID=c.CONTRACT_ID),0)
+		+
+		IFNULL((SELECT
+		SUM(amount) amount FROM EXT_CPRODUCT_C WHERE
+		CONTRACT_PRODUCT_ID IN
+		(SELECT cp.CONTRACT_PRODUCT_ID FROM CONTRACT_PRODUCT_C cp WHERE
+		CONTRACT_ID=c.CONTRACT_ID)
+		),0)
+		AS totalAmount,
+		c.CONTRACT_ID,c.OFFEROR,c.CONTRACT_NO,c.SIGNING_DATE,c.INPUT_BY,c.CHECK_BY,c.INSPECTOR,c.IMPORT_NUM,c.CREQUEST,c.CUSTOM_NAME,c.DELIVERY_PERIOD,c.SHIP_TIME,c.TRADE_TERMS,c.REMARK,c.PRINT_STYLE,c.OLD_STATE,c.STATE,c.OUT_STATE
+		FROM contract_c c
+		WHERE 1=1
+	</select>
+
+	<select id="findById" resultMap="contractRM">
+		select * from contract_c where
+		CONTRACT_ID=#{id}
+	</select>
+
+	<delete id="deleteById">
+		delete from CONTRACT_C where
+		CONTRACT_ID=#{id}
+	</delete>
+
+	<delete id="deleteByIds">
+		delete from CONTRACT_C
+		where CONTRACT_ID in
+		<foreach collection="array" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
+
+	<insert id="insertOne" parameterType="contract">
+		insert into
+		CONTRACT_C(CONTRACT_ID,OFFEROR,CONTRACT_NO,SIGNING_DATE,INPUT_BY,CHECK_BY,INSPECTOR,TOTAL_AMOUNT,
+		IMPORT_NUM,CREQUEST,CUSTOM_NAME,DELIVERY_PERIOD,SHIP_TIME,TRADE_TERMS,REMARK,PRINT_STYLE,OLD_STATE,
+		STATE,OUT_STATE,CREATE_BY,CREATE_DEPT,CREATE_TIME)
+		values(#{id},#{offeror},#{contractNo},#{signingDate},#{inputBy},#{checkBy},#{inspector},#{totalAmount},
+		#{importNum},#{crequest},#{customName},#{deliveryPeriod},#{shipTime},#{tradeTerms},#{remark},#{printStyle},
+		#{oldState},#{state},#{outState},#{createBy},#{createDept},#{createTime})
+	</insert>
+
+
+	<update id="updateOne" parameterType="contract">
+		update CONTRACT_C
+		set
+		OFFEROR=#{offeror},CONTRACT_NO=#{contractNo},SIGNING_DATE=#{signingDate},INPUT_BY=#{inputBy},
+		CHECK_BY=#{checkBy},INSPECTOR=#{inspector},TOTAL_AMOUNT=#{totalAmount},IMPORT_NUM=#{importNum},
+		CREQUEST=#{crequest},CUSTOM_NAME=#{customName},DELIVERY_PERIOD=#{deliveryPeriod},SHIP_TIME=#{shipTime},
+		TRADE_TERMS=#{tradeTerms},REMARK=#{remark},PRINT_STYLE=#{printStyle},OLD_STATE=#{oldState},
+		STATE=#{state},OUT_STATE=#{outState},CREATE_BY=#{createBy},CREATE_DEPT=#{createDept}
+		where CONTRACT_ID=#{id}
+	</update>
+
+	<update id="changeState" parameterType="map">
+		update CONTRACT_C
+		set
+		STATE=#{state}
+		where CONTRACT_ID=#{id}
+	</update>
+
+	<update id="updateTotalAmount" parameterType="contract">
+		update CONTRACT_C
+		set TOTAL_AMOUNT=#{totalAmount}
+		where CONTRACT_ID=#{id}
+	</update>
+
+
+
+
+</mapper>

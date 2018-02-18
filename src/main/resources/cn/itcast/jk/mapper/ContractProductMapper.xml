@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.itcast.jk.mapper.ContractProductMapper">
+	<resultMap type="cn.itcast.jk.domain.ContractProduct" id="contractProductRM">
+		<id property="id" column="CONTRACT_PRODUCT_ID"/>
+		<result property="contractId" column="CONTRACT_ID" />
+		<result property="factoryId" column="FACTORY_ID" />
+		<result property="factoryName" column="FACTORY_NAME" />
+		<result property="productNo" column="PRODUCT_NO" />
+		<result property="productImage" column="PRODUCT_IMAGE" />
+		<result property="productDesc" column="PRODUCT_DESC" />
+		<result property="cnumber" column="CNUMBER" />
+		<result property="outNumber" column="OUT_NUMBER" />
+		<result property="loadingRate" column="LOADING_RATE" />
+		<result property="boxNum" column="BOX_NUM" />
+		<result property="packingUnit" column="PACKING_UNIT" />
+		<result property="price" column="PRICE" />
+		<result property="amount" column="AMOUNT" />
+		<result property="finished" column="FINISHED" />
+		<result property="exts" column="EXTS" />
+		<result property="orderNo" column="ORDER_NO" />
+	</resultMap>
+	
+	
+	<select id="findAll" resultMap="contractProductRM">
+		select * from CONTRACT_PRODUCT_C
+	</select>
+	
+	<select id="findById" resultMap="contractProductRM">
+		select * from CONTRACT_PRODUCT_C where CONTRACT_PRODUCT_ID=#{id}
+	</select>
+	
+	<!-- 查询指定合同id下的所有合同货物 -->
+	<select id="findAllByContractId" resultMap="contractProductRM">
+		select * from CONTRACT_PRODUCT_C where CONTRACT_ID=#{contractId}
+	</select>
+	
+	<delete id="deleteById">
+		delete from CONTRACT_PRODUCT_C where CONTRACT_PRODUCT_ID=#{id}
+	</delete>
+	
+	<delete id="deleteByIds">
+		delete from CONTRACT_PRODUCT_C where CONTRACT_PRODUCT_ID in
+		<foreach collection="array" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<insert id="insertOne" parameterType="contractProduct">
+		insert into 
+		CONTRACT_PRODUCT_C(CONTRACT_PRODUCT_ID,CONTRACT_ID,FACTORY_ID,FACTORY_NAME,PRODUCT_NO,PRODUCT_IMAGE,
+		PRODUCT_DESC,CNUMBER,OUT_NUMBER,LOADING_RATE,BOX_NUM,PACKING_UNIT,PRICE,AMOUNT,FINISHED,EXTS,ORDER_NO)
+		values(#{id},#{contractId},#{factoryId},#{factoryName},#{productNo},#{productImage},#{productDesc},
+		#{cnumber},#{outNumber},#{loadingRate},#{boxNum},#{packingUnit},#{price},#{amount},#{finished},#{exts},#{orderNo})
+	</insert>	
+	
+	<update id="updateOne" parameterType="contractProduct">
+		update CONTRACT_PRODUCT_C 
+		set
+		CONTRACT_ID=#{contractId},FACTORY_ID=#{contractId},FACTORY_NAME=#{factoryName},PRODUCT_NO=#{productNo},
+		PRODUCT_IMAGE=#{productImage},PRODUCT_DESC=#{productDesc},CNUMBER=#{cnumber},OUT_NUMBER=#{outNumber},
+		LOADING_RATE=#{loadingRate},BOX_NUM=#{boxNum},PACKING_UNIT=#{packingUnit},PRICE=#{price},AMOUNT=#{amount},
+		FINISHED=#{finished},EXTS=#{exts},ORDER_NO=#{orderNo}
+		where 
+		CONTRACT_PRODUCT_ID=#{id}
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

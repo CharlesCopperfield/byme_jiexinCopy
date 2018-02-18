@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.itcast.jk.mapper.FactoryMapper">
+	<resultMap id="factoryRM" type="cn.itcast.jk.domain.Factory" >
+		<id  property="id" column="FACTORY_ID" />
+		<result property="fullName" column="FULL_NAME" />
+		<result property="factoryName" column="FACTORY_NAME" />
+		<result property="contacts" column="CONTACTS" />
+		<result property="phone" column="PHONE" />
+		<result property="mobile" column="MOBILE" />
+		<result property="fax" column="FAX" />
+		<result property="cnote" column="CNOTE" />
+		<result property="inspector" column="INSPECTOR" />
+		<result property="state" column="STATE" />
+		<result property="orderNo" column="ORDER_NO" />
+		
+		<result property="createBy" column="CREATE_BY" />
+		<result property="createDept" column="CREATE_DEPT" />
+		<result property="createTime" column="CREATE_TIME" />
+	</resultMap>
+	
+	
+	<select id="findAll" resultMap="factoryRM">
+		select * from factory_c
+	</select>
+	
+	<select id="findById" resultMap="factoryRM" >
+		select * from factory_c where FACTORY_ID=#{id}
+	</select>
+	
+	<!-- 查询所有厂家名称 -->
+	<select id="findAllName" resultType="string">
+		select FACTORY_NAME from factory_c
+	</select>
+	
+	<delete id="deleteById" >
+		delete from factory_c where FACTORY_ID=#{id}
+	</delete>
+	
+	<delete id="deleteByIds" >
+		delete from factory_c 
+		where FACTORY_ID in
+		<foreach collection="array" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach> 
+	</delete>
+	
+	<insert id="insertOne" parameterType="factory" >
+		insert into	
+		factory_c(FACTORY_ID,FULL_NAME,FACTORY_NAME,CONTACTS,PHONE,MOBILE,FAX,CNOTE,INSPECTOR,STATE,ORDER_NO,CREATE_BY,CREATE_DEPT,CREATE_TIME)
+		values
+		(#{id},#{fullName},#{factoryName},#{contacts},#{phone},#{mobile},#{fax},
+		#{cnote},#{inspector},#{state},#{orderNo},#{createBy},#{createDept}
+		,#{createTime}) 
+	</insert>
+	
+	<update id="updateOne" parameterType="factory">
+		update factory_c set 
+		FULL_NAME=#{fullName},FACTORY_NAME=#{factoryName},CONTACTS=#{contacts},
+		PHONE=#{phone},MOBILE=#{mobile},FAX=#{fax},CNOTE=#{cnote},
+		INSPECTOR=#{inspector},STATE=#{state},ORDER_NO=#{orderNo}
+		where 
+		FACTORY_ID=#{id}
+	</update>
+	
+	<!-- 修改状态 -->
+	<update id="changeState">
+		update factory_c set
+		STATE=#{state}
+		where 
+		FACTORY_ID	in
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</update>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
